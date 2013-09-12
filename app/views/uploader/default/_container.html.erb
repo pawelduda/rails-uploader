@@ -38,6 +38,16 @@
                 $uploadZone.show();
           }
       };
+
+      clearInvalidUploads = function(inputFile, message){
+          $inputFile  = $(inputFile);
+          $uploadArea = $inputFile.parents('.uploader-dnd-area');
+          $uploadArea.find('div[id=asset_]').each(function(){
+            $fileBox = $(this);
+            $fileBox.html(message || "<%= I18n.t('uploader.invalid_upload') %>");
+            setTimeout(function(){$fileBox.fadeOut(function(){$fileBox.remove(); toggleSelector($inputFile)})},3000);
+          });
+      };
       
       $('#<%= field.id %> input[type="file"]').each(function(){
         $(this).fileupload({
@@ -49,10 +59,14 @@
           filesContainer: container,
           namespace: 'uploader',
           uploadTemplateId: 'template-upload-<%= field.klass %>',
-          downloadTemplateId: 'template-download-<%= field.klass %>',
+          downloadTemplateId: 'template-download-<%= field.klass %>'
         });
 
         $(this).on('fileuploadadded fileuploaddestroyed', function(){toggleSelector(this)});
+        $(this).on('fileuploadfailed', function(e, data){
+            errorMessage = data.response().jqXHR.responseJSON.data[0];
+            clearInvalidUploads(this, errorMessage);
+        });
 
         <% if field.exists? -%>
           uploader = ($(this).data('blueimp-fileupload') || $(this).data('fileupload'));
