@@ -4,5 +4,6 @@
 //= require uploader/load-image.min
 //= require uploader/jquery.iframe-transport
 //= require uploader/jquery.fileupload
+//= require uploader/jquery.fileupload-fp
 //= require uploader/jquery.fileupload-ui
 
