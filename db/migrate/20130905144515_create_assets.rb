@@ -11,6 +11,7 @@ class CreateAssets < ActiveRecord::Migration
 
       t.string  :guid, :limit => 20
       t.string  :public_token, :limit => 20
+      t.string  :description
 
       t.integer :user_id
       t.integer :sort_order, :default => 0

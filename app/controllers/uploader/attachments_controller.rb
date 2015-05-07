@@ -12,13 +12,7 @@ module Uploader
     end
     
     def update
-      @assets = Array.wrap(params[:assets] || [])
-
-      @assets.each_with_index do |id, index|
-        @klass.where(:id => id).update_all(:sort_order => index)
-      end
-
-      render_json(:files => [])
+      params[:id].present? ? update_asset : sort_assets
     end
 
     def destroy
@@ -27,6 +21,20 @@ module Uploader
     end
     
     protected
+
+      def update_asset
+        @asset = @klass.find(params[:id])
+        @asset.update_attributes(params[:asset])
+        render_resourse(@asset)
+      end
+
+      def sort_assets
+        @assets = Array.wrap(params[:assets] || [])
+        @assets.each_with_index do |id, index|
+          @klass.where(:id => id).update_all(:sort_order => index)
+        end
+        render_json(:files => [])
+      end
     
       def find_klass
         @klass = Uploader.constantize(params[:klass])

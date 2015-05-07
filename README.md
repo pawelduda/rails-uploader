@@ -69,7 +69,8 @@ class Picture < Asset
         "filename" => File.basename(data.path),
         "url" => data.url,
         "thumb_url" => data.url(:thumb),
-        "public_token" => public_token
+        "public_token" => public_token,
+        "description" => description
     }
   end
 end

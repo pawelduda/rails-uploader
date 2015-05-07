@@ -204,3 +204,7 @@ input[disabled].uploader-button.gray {
 .uploader-dnd-area .attach_item.loading .progressBar {
   display: block;
 }
+
+.uploader-files .fileDescription {
+  margin-top: 5px;
+}

@@ -27,6 +27,13 @@
       var uploader, container;
       container = $("#<%= field.id %> div.uploader-files");
 
+      $(document).off('change.descriptionUpdated');
+      $(document).on('change.descriptionUpdated', 'input.asset-description', function(){
+        url = $(this).attr('data-url');
+        description = $(this).val();
+        $.ajax({ url: url, data: { asset: { description: description } }, type: 'PUT' });
+      });
+
       toggleSelector = function(inputFile){
           if (!<%= field.multiple? %>) {
               $inputFile  = $(inputFile);
