@@ -26,6 +26,13 @@ Migration for ActiveRecord:
 $> rake uploader:install:migrations
 ```
 
+## New functionality in this fork
+
+Use 'multiple: false' option to only allow single uploads in has_many relations. Newly added files will be appended to the existing collection.
+Use 'versionable: true' option to disallow deletion or editing existing entries on subsequent edits of parent model.
+
+Combining 'multiple' and 'versionable' options can be used in files versioning.
+
 ## Usage
 
 Architecture to store uploaded files (cancan integration):
