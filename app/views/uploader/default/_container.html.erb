@@ -75,7 +75,7 @@
             clearInvalidUploads(this, errorMessage);
         });
 
-        <% if field.exists? -%>
+        <% if field.exists? && !field.versionable? -%>
           uploader = ($(this).data('blueimp-fileupload') || $(this).data('fileupload'));
           uploader
             ._renderDownload(<%=raw field.values.to_json(:root => false) %>)

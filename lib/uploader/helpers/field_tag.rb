@@ -39,9 +39,9 @@ module Uploader
       def object_name
         @options[:object_name]
       end
-      
+
       def multiple?
-        @object.fileupload_multiple?(method_name)
+        @options[:multiple].nil? ? @object.fileupload_multiple?(method_name) : @options[:multiple]
       end
       
       def value
@@ -58,6 +58,10 @@ module Uploader
 
       def sortable?
         @options[:sortable] == true
+      end
+
+      def versionable?
+        @options[:versionable] == true
       end
       
       def klass
