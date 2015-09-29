@@ -1,9 +1,9 @@
 <%= content_tag(:div, :id => field.id, :class => "uploader-dnd-area") do -%>
   <%= hidden_field(field.object_name, :fileupload_guid, :object => field.object) if field.object.new_record? %>
-  
+
   <div class="uploader-files"></div>
-  
-	<div class="uploader-dnd-hints">  
+
+	<div class="uploader-dnd-hints">
 	  <span class="uploader-button gray fileinput-button">
       <span><%= I18n.t('uploader.button') %></span>
       <%= fields_for field.object do |f| -%>
@@ -12,16 +12,16 @@
 	      <% end -%>
 	    <% end -%>
     </span>
-    
+
 	  <div class="uploader-dnd-hint">
 		  <%= I18n.t('uploader.or') %><span><%= I18n.t('uploader.drop') %></span>
 	  </div>
 	</div>
-	
+
 	<%= render :partial => "uploader/#{field.theme}/upload", :locals => {:field => field} %>
   <%= render :partial => "uploader/#{field.theme}/download", :locals => {:field => field} %>
   <%= render :partial => "uploader/#{field.theme}/sortable", :locals => {:field => field} if field.sortable? %>
-  
+
 	<script type="text/javascript">
     $(function() {
       var uploader, container;
@@ -55,7 +55,7 @@
             setTimeout(function(){$fileBox.fadeOut(function(){$fileBox.remove(); toggleSelector($inputFile)})},3000);
           });
       };
-      
+
       $('#<%= field.id %> input[type="file"]').each(function(){
         $(this).fileupload({
           dataType: 'json',
@@ -75,7 +75,7 @@
             clearInvalidUploads(this, errorMessage);
         });
 
-        <% if field.exists? && !field.versionable? -%>
+        <% if field.exists? -%>
           uploader = ($(this).data('blueimp-fileupload') || $(this).data('fileupload'));
           uploader
             ._renderDownload(<%=raw field.values.to_json(:root => false) %>)
