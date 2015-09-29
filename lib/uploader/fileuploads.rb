@@ -33,13 +33,13 @@ module Uploader
         
         class_attribute :fileuploads_columns, :instance_writer => false
         self.fileuploads_columns = args.map(&:to_sym)
-        
+
         unless self.is_a?(ClassMethods)
           include InstanceMethods
           extend ClassMethods
-          
+
           after_save :fileuploads_update, :if => :fileupload_changed?
-          
+
           fileuploads_columns.each { |asset| accepts_nested_attributes_for asset, :allow_destroy => true }
         end
       end
@@ -87,6 +87,10 @@ module Uploader
       def fileupload_guid
         @fileupload_guid ||= Uploader.guid
       end
+
+      def fileupload_versionable?
+        fileuploads_options[:versionable]
+      end
       
       def fileupload_guid=(value)
         @fileupload_changed = true unless value.blank?
@@ -96,7 +100,7 @@ module Uploader
       def fileupload_changed?
         @fileupload_changed === true
       end
-      
+
       def fileupload_multiple?(method)
         self.class.fileupload_multiple?(method)
       end
@@ -104,7 +108,7 @@ module Uploader
       # Find or build new asset object
       def fileupload_asset(method)
         if fileuploads_columns.include?(method.to_sym)
-          asset = new_record? ? self.class.fileupload_find(method, fileupload_guid) : send(method)
+          asset = new_record? || fileupload_versionable? ? self.class.fileupload_find(method, fileupload_guid) : send(method)
           asset ||= send("build_#{method}") if respond_to?("build_#{method}")
           asset
         end
@@ -116,11 +120,11 @@ module Uploader
       
       protected
       
-        def fileuploads_update
-          fileuploads_columns.each do |method|
-            self.class.fileupload_update(id, fileupload_guid, method)
-          end
+      def fileuploads_update
+        fileuploads_columns.each do |method|
+          self.class.fileupload_update(id, fileupload_guid, method)
         end
+      end
     end
   end
 end

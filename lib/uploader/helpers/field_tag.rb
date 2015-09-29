@@ -74,8 +74,8 @@ module Uploader
           :assetable_type => @object.class.base_class.name.to_s,
           :klass => klass.to_s
         }.merge(options)
-        
-        options[:assetable_id] = @object.id if @object.persisted?
+
+        options[:assetable_id] = @object.id if @object.persisted? && !versionable?
         
         uploader.attachments_path(options)
       end
